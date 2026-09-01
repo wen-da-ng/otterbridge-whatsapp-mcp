@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "otterbridge-whatsapp-mcp",
+  "displayName": "WhatsApp - OtterBridge",
+  "version": "1.0.1",
+  "description": "OtterBridge WhatsApp MCP: 171 tools (chats, contacts, groups, channels, media, polls) with human-like send pacing and runtime patches for current WhatsApp Web.",
+  "author": {
+    "name": "wen-da-ng",
+    "email": "lenus.ng.wen.da@gmail.com"
+  },
+  "homepage": "https://otterbridge.studio",
+  "repository": "https://github.com/wen-da-ng/otterbridge-whatsapp-mcp",
+  "license": "LicenseRef-OtterBridge-Commercial",
+  "keywords": [
+    "whatsapp",
+    "messaging",
+    "chat",
+    "groups",
+    "contacts",
+    "otterbridge"
+  ]
+}

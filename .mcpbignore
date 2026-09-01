@@ -1,0 +1,15 @@
+# A linked session appears next to the server as .wwebjs_auth/ and is a LIVE
+# CREDENTIAL. It must never be packed into a distributed bundle.
+.wwebjs_auth/
+.wwebjs_cache/
+.lab-token
+.env
+
+# Repo scaffolding the end user does not need
+.git/
+.gitignore
+.mcpbignore
+
+# Claude Code plugin wiring — shipped by the repo, not by the .mcpb
+.claude-plugin/
+.mcp.json

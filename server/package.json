@@ -1,0 +1,10 @@
+{
+  "name": "otterbridge-whatsapp-mcp-server",
+  "version": "1.0.1",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}

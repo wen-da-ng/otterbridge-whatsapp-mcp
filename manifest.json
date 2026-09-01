@@ -1,0 +1,759 @@
+{
+  "manifest_version": "0.2",
+  "name": "otterbridge-whatsapp-mcp",
+  "display_name": "WhatsApp - OtterBridge",
+  "version": "1.0.1",
+  "description": "Read and act on your WhatsApp from your AI assistant — 171 tools for chats, contacts, groups, channels and media, with human-like send pacing.",
+  "long_description": "Connects the WhatsApp account you already use (via WhatsApp Web) and exposes 171 tools: read chats, contacts, groups and channels; send text, media, polls, locations and stickers; react, reply, edit, forward and manage groups.\n\nOutbound messages are paced to resemble human sending — a typing indicator sized to the message, randomised delays, per-chat cooldowns, and ceilings of 40/hour, 200/day and 5 new chats per hour.\n\nEvery tool carries MCP ToolAnnotations: 69 read-only tools your assistant can call freely, and 14 irreversible ones it is told to confirm with you first.\n\nUNOFFICIAL CLIENT. This drives WhatsApp Web in a headless browser. It is not affiliated with WhatsApp or Meta, using it may violate WhatsApp's terms, and accounts can be banned. Requires Chrome (or Chromium/Edge) installed, and linking a device by QR once.",
+  "author": {
+    "name": "wen-da-ng",
+    "email": "lenus.ng.wen.da@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wen-da-ng/otterbridge-whatsapp-mcp.git"
+  },
+  "homepage": "https://otterbridge.studio",
+  "documentation": "https://otterbridge.studio",
+  "support": "https://otterbridge.studio",
+  "icon": "static/otterbridge-whatsapp-mcp.png",
+  "license": "LicenseRef-OtterBridge-Commercial",
+  "keywords": [
+    "whatsapp",
+    "messaging",
+    "chat",
+    "groups",
+    "contacts",
+    "mcp",
+    "claude",
+    "otterbridge"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
+      "env": {
+        "WA_CLIENT_ID": "${user_config.session_name}",
+        "CHROME_PATH": "${user_config.chrome_path}"
+      }
+    }
+  },
+  "user_config": {
+    "session_name": {
+      "type": "string",
+      "title": "Session name",
+      "description": "Names the linked device and its local session folder. Change it to run a second account.",
+      "default": "claude",
+      "required": false
+    },
+    "chrome_path": {
+      "type": "string",
+      "title": "Chrome path (optional)",
+      "description": "Leave blank to auto-detect Chrome, Chromium or Edge. Set only if detection fails.",
+      "default": "",
+      "required": false
+    }
+  },
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": [
+      "win32",
+      "darwin",
+      "linux"
+    ],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "tools": [
+    {
+      "name": "whatsapp_state",
+      "description": "Get connection state: Current WhatsApp Web state (CONNECTED, OPENING, PAIRING…). [Read-only.]"
+    },
+    {
+      "name": "whatsapp_wweb_version",
+      "description": "Get WhatsApp Web version: Which web build the injected page is running. Useful when the library breaks after a WhatsApp update. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_client_info",
+      "description": "Get client info: Logged-in account: wid, pushname, platform. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_battery",
+      "description": "Get battery info: Phone battery (legacy; often empty on multi-device). [Read-only.]"
+    },
+    {
+      "name": "whatsapp_set_display_name",
+      "description": "Set display name: Changes your WhatsApp profile name."
+    },
+    {
+      "name": "whatsapp_set_status",
+      "description": "Set About / status text: Sets the \"About\" line on your profile."
+    },
+    {
+      "name": "whatsapp_set_profile_pic",
+      "description": "Set profile picture: Uploads a new profile photo from a local path or URL."
+    },
+    {
+      "name": "whatsapp_delete_profile_pic",
+      "description": "Delete profile picture: Removes your profile photo. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_set_device_name",
+      "description": "Set linked device name: Renames this session in Linked Devices."
+    },
+    {
+      "name": "whatsapp_presence_available",
+      "description": "Go online: Marks the account as available (drives \"online\" for contacts)."
+    },
+    {
+      "name": "whatsapp_presence_unavailable",
+      "description": "Go offline: Marks the account unavailable."
+    },
+    {
+      "name": "whatsapp_auto_dl_photos",
+      "description": "Auto-download photos: Toggle automatic photo download."
+    },
+    {
+      "name": "whatsapp_auto_dl_audio",
+      "description": "Auto-download audio: Toggle automatic audio download."
+    },
+    {
+      "name": "whatsapp_auto_dl_video",
+      "description": "Auto-download video: Toggle automatic video download."
+    },
+    {
+      "name": "whatsapp_auto_dl_docs",
+      "description": "Auto-download documents: Toggle automatic document download."
+    },
+    {
+      "name": "whatsapp_background_sync",
+      "description": "Set background sync: Controls whether WhatsApp Web syncs in the background."
+    },
+    {
+      "name": "whatsapp_pairing_code",
+      "description": "Request pairing code: Alternative to QR: links via an 8-char code typed on the phone. Include country code, digits only."
+    },
+    {
+      "name": "whatsapp_cancel_pairing",
+      "description": "Cancel pairing code: Aborts an in-flight pairing-code request."
+    },
+    {
+      "name": "whatsapp_reset_state",
+      "description": "Reset state: Forces the page back to a clean connection state. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_contacts_all",
+      "description": "List all contacts: Every contact known to the account. Can be thousands. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_contact_by_id",
+      "description": "Get contact by id: Full contact object including business fields. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_number_id",
+      "description": "Resolve number → WhatsApp id: Returns the serialized WID, or null if the number is not on WhatsApp. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_is_registered",
+      "description": "Is number on WhatsApp?: Boolean registration check. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_formatted_number",
+      "description": "Format number: WhatsApp’s own international formatting. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_country_code",
+      "description": "Get country code: Extracts the country calling code. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_profile_pic",
+      "description": "Get profile picture URL: Returns a CDN URL, or undefined if hidden by privacy settings. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_about",
+      "description": "Get contact About text: The contact’s status line, privacy permitting. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_common_groups",
+      "description": "Groups in common: Groups you share with this contact. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_device_count",
+      "description": "Count linked devices: How many devices that contact has linked. 0 can mean unreachable. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_lid_and_phone",
+      "description": "Map LID ↔ phone number: WhatsApp’s newer LID identifiers vs classic phone JIDs. Comma-separate ids. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_blocked",
+      "description": "List blocked contacts: Everyone you have blocked. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_block",
+      "description": "Block contact: Blocks a contact. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_unblock",
+      "description": "Unblock contact: Unblocks a contact."
+    },
+    {
+      "name": "whatsapp_save_contact",
+      "description": "Save / edit address book contact: Writes a contact into the WhatsApp address book."
+    },
+    {
+      "name": "whatsapp_delete_contact",
+      "description": "Delete address book contact: Removes a saved contact. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_chats_all",
+      "description": "List chats: All chats, newest first. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_chat_by_id",
+      "description": "Get chat by id: Full chat object. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_fetch_messages",
+      "description": "Fetch chat history: Loads recent messages. fromMe filter optional. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_search_messages",
+      "description": "Search messages: Full-text search across chats (or within one). [Read-only.]"
+    },
+    {
+      "name": "whatsapp_pinned_messages",
+      "description": "Get pinned messages: Messages pinned in a chat. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_send_seen",
+      "description": "Mark chat as read: Sends read receipts (blue ticks) for the chat."
+    },
+    {
+      "name": "whatsapp_mark_unread",
+      "description": "Mark chat as unread: Flags the chat unread."
+    },
+    {
+      "name": "whatsapp_archive",
+      "description": "Archive chat: Moves the chat to Archived."
+    },
+    {
+      "name": "whatsapp_unarchive",
+      "description": "Unarchive chat: Restores an archived chat."
+    },
+    {
+      "name": "whatsapp_pin",
+      "description": "Pin chat: Pins to the top. WhatsApp caps this at 3."
+    },
+    {
+      "name": "whatsapp_unpin",
+      "description": "Unpin chat: Unpins the chat."
+    },
+    {
+      "name": "whatsapp_mute",
+      "description": "Mute chat: Mute until a date. Leave blank to mute indefinitely."
+    },
+    {
+      "name": "whatsapp_unmute",
+      "description": "Unmute chat: Removes the mute."
+    },
+    {
+      "name": "whatsapp_typing",
+      "description": "Show \"typing…\": Broadcasts the typing indicator."
+    },
+    {
+      "name": "whatsapp_recording",
+      "description": "Show \"recording audio…\": Broadcasts the recording indicator."
+    },
+    {
+      "name": "whatsapp_clear_state",
+      "description": "Clear typing/recording state: Stops the indicator."
+    },
+    {
+      "name": "whatsapp_sync_history",
+      "description": "Request history sync: Asks the phone to push older history for a chat."
+    },
+    {
+      "name": "whatsapp_clear_messages",
+      "description": "Clear chat messages: Deletes all messages but keeps the chat. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_delete_chat",
+      "description": "Delete chat: Removes the chat entirely. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_send_text",
+      "description": "Send text message: Plain text. Supports *bold*, _italic_, ~strike~ and monospace."
+    },
+    {
+      "name": "whatsapp_send_media",
+      "description": "Send media (image/video/doc): From a local path or URL. Flags cover HD, GIF, document and view-once modes."
+    },
+    {
+      "name": "whatsapp_send_voice",
+      "description": "Send voice note: Sends audio as a push-to-talk voice note (needs ffmpeg for non-ogg input)."
+    },
+    {
+      "name": "whatsapp_send_sticker",
+      "description": "Send sticker: Converts an image to a sticker, with author/pack metadata."
+    },
+    {
+      "name": "whatsapp_send_location",
+      "description": "Send location: Pin with optional name and address."
+    },
+    {
+      "name": "whatsapp_send_contact",
+      "description": "Send contact card: Forwards a contact as a vCard."
+    },
+    {
+      "name": "whatsapp_send_poll",
+      "description": "Send poll: Native WhatsApp poll. Two to twelve options."
+    },
+    {
+      "name": "whatsapp_poll_votes",
+      "description": "Get poll votes: Reads votes cast on a poll message. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_send_buttons",
+      "description": "Send buttons (legacy): Interactive buttons. WhatsApp has largely retired these for unofficial clients, so expect failure. Kept here to document the limit."
+    },
+    {
+      "name": "whatsapp_send_list",
+      "description": "Send list message (legacy): Selectable list. Same retirement caveat as buttons."
+    },
+    {
+      "name": "whatsapp_get_message",
+      "description": "Get message by id: Full message object. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_download_media",
+      "description": "Download message media: Returns mimetype, filename and size. The base64 body is omitted to keep the log readable. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_message_info",
+      "description": "Get delivery info: Per-recipient delivered/read receipts. Only works for your own messages. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_reactions",
+      "description": "Get message reactions: Who reacted and with what. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_mentions",
+      "description": "Get message mentions: Contacts mentioned in the message. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_quoted",
+      "description": "Get quoted message: The message this one replies to. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_reply",
+      "description": "Reply to a message: Sends a quoted reply."
+    },
+    {
+      "name": "whatsapp_react",
+      "description": "React to a message: Send an emoji reaction. An empty string removes it."
+    },
+    {
+      "name": "whatsapp_forward",
+      "description": "Forward a message: Forwards to another chat."
+    },
+    {
+      "name": "whatsapp_edit",
+      "description": "Edit a message: Edits your own message. WhatsApp allows roughly 15 minutes."
+    },
+    {
+      "name": "whatsapp_delete_msg",
+      "description": "Delete a message: everyone=true revokes for all; false deletes only for you. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_star",
+      "description": "Star message: Adds to starred messages."
+    },
+    {
+      "name": "whatsapp_unstar",
+      "description": "Unstar message: Removes from starred."
+    },
+    {
+      "name": "whatsapp_pin_msg",
+      "description": "Pin message: Pins in-chat for N seconds (86400 = 1 day)."
+    },
+    {
+      "name": "whatsapp_unpin_msg",
+      "description": "Unpin message: Unpins the message."
+    },
+    {
+      "name": "whatsapp_groups_list",
+      "description": "List groups: All group chats with participant counts. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_group_info",
+      "description": "Get group details: Full group object including every participant and their admin flags. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_group_create",
+      "description": "Create group: Creates a group. Some numbers may fail to be added if their privacy settings forbid it; the result reports which."
+    },
+    {
+      "name": "whatsapp_group_add",
+      "description": "Add participants: Adds members. Returns a per-participant status code."
+    },
+    {
+      "name": "whatsapp_group_remove",
+      "description": "Remove participants: Kicks members. Requires admin. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_group_promote",
+      "description": "Promote to admin: Grants admin rights."
+    },
+    {
+      "name": "whatsapp_group_demote",
+      "description": "Demote admin: Revokes admin rights."
+    },
+    {
+      "name": "whatsapp_group_subject",
+      "description": "Set group name: Renames the group."
+    },
+    {
+      "name": "whatsapp_group_description",
+      "description": "Set group description: Updates the group description."
+    },
+    {
+      "name": "whatsapp_group_picture",
+      "description": "Set group picture: Uploads a new group icon."
+    },
+    {
+      "name": "whatsapp_group_delete_picture",
+      "description": "Delete group picture: Removes the group icon. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_group_msgs_admins_only",
+      "description": "Only admins can send: Announcement mode on or off."
+    },
+    {
+      "name": "whatsapp_group_info_admins_only",
+      "description": "Only admins can edit info: Locks name/description/icon to admins."
+    },
+    {
+      "name": "whatsapp_group_add_admins_only",
+      "description": "Only admins can add members: Restricts who may add participants."
+    },
+    {
+      "name": "whatsapp_group_invite_code",
+      "description": "Get invite code: Returns the code; the link is https://chat.whatsapp.com/<code>. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_group_revoke_invite",
+      "description": "Revoke invite link: Invalidates the old link and returns a new code. [Destructive — removes or invalidates something.]"
+    },
+    {
+      "name": "whatsapp_group_invite_info",
+      "description": "Inspect an invite code: Previews a group from its invite code without joining. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_group_accept_invite",
+      "description": "Join group by invite code: Joins the group and returns its id."
+    },
+    {
+      "name": "whatsapp_group_requests",
+      "description": "List membership requests: Pending join requests for a group. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_group_approve",
+      "description": "Approve membership requests: Approves specific requesters, or all if left blank."
+    },
+    {
+      "name": "whatsapp_group_reject",
+      "description": "Reject membership requests: Rejects specific requesters, or all if left blank."
+    },
+    {
+      "name": "whatsapp_group_leave",
+      "description": "Leave group: Leaves the group. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_channels_list",
+      "description": "List channels: Channels (newsletters) you follow or own. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_channel_search",
+      "description": "Search public channels: Directory search. Filter by country/category, or leave blank for a general listing. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_channel_by_invite",
+      "description": "Get channel by invite code: Resolves a channel invite code to the channel. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_channel_create",
+      "description": "Create channel: Creates a new channel you own."
+    },
+    {
+      "name": "whatsapp_channel_subscribe",
+      "description": "Subscribe to channel: Follows a channel."
+    },
+    {
+      "name": "whatsapp_channel_unsubscribe",
+      "description": "Unsubscribe from channel: Unfollows a channel."
+    },
+    {
+      "name": "whatsapp_channel_send",
+      "description": "Send to channel: Posts a text message to a channel you own."
+    },
+    {
+      "name": "whatsapp_channel_messages",
+      "description": "Fetch channel messages: Reads recent channel posts. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_channel_subscribers",
+      "description": "Get channel subscribers: Lists subscribers of a channel you own. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_channel_subject",
+      "description": "Set channel name: Renames a channel you own."
+    },
+    {
+      "name": "whatsapp_channel_description",
+      "description": "Set channel description: Updates the description."
+    },
+    {
+      "name": "whatsapp_channel_picture",
+      "description": "Set channel picture: Uploads a channel icon."
+    },
+    {
+      "name": "whatsapp_channel_reactions",
+      "description": "Set channel reaction policy: Modes: ALL, BASIC, NONE."
+    },
+    {
+      "name": "whatsapp_channel_admin_invite",
+      "description": "Invite a channel admin: Sends an admin invite for a channel you own."
+    },
+    {
+      "name": "whatsapp_channel_admin_accept",
+      "description": "Accept channel admin invite: Accepts an admin invitation."
+    },
+    {
+      "name": "whatsapp_channel_admin_revoke",
+      "description": "Revoke channel admin invite: Cancels a pending admin invite. [Destructive — removes or invalidates something.]"
+    },
+    {
+      "name": "whatsapp_channel_admin_demote",
+      "description": "Demote channel admin: Removes admin rights. [Destructive — removes or invalidates something.]"
+    },
+    {
+      "name": "whatsapp_channel_transfer",
+      "description": "Transfer channel ownership: Hands the channel to another user. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_channel_delete",
+      "description": "Delete channel: Permanently deletes a channel you own. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_broadcasts",
+      "description": "List broadcast lists & status: Broadcast lists plus the Status feed. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_broadcast_by_id",
+      "description": "Get broadcast by id: A single broadcast list. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_revoke_status",
+      "description": "Delete a status update: Removes one of your own status posts. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_labels",
+      "description": "List labels: WhatsApp Business labels. Empty on a personal account. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_label_by_id",
+      "description": "Get label by id: A single label. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_chat_labels",
+      "description": "Get labels on a chat: Labels applied to one chat. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_chats_by_label",
+      "description": "Get chats by label: Every chat carrying a label. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_label_apply",
+      "description": "Add / remove labels on chats: Sets the label set for the given chats."
+    },
+    {
+      "name": "whatsapp_customer_note_get",
+      "description": "Get customer note: Business CRM note attached to a chat. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_customer_note_set",
+      "description": "Set customer note: Writes the CRM note for a chat."
+    },
+    {
+      "name": "whatsapp_order",
+      "description": "Get order from message: Reads a business order attached to an order-type message. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_payment",
+      "description": "Get payment from message: Reads payment details from a payment-type message. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_call_link",
+      "description": "Create a call link: Generates a shareable voice or video call link. Start time is required by the library (a Date); blank means now."
+    },
+    {
+      "name": "whatsapp_scheduled_event_respond",
+      "description": "Respond to a scheduled event: Responses: going, not_going, maybe."
+    },
+    {
+      "name": "whatsapp_poll_vote",
+      "description": "Vote on a poll: Casts your own vote on a received poll. No Client-level equivalent exists."
+    },
+    {
+      "name": "whatsapp_msg_reload",
+      "description": "Reload message: Re-reads the message from the store; returns null if it was deleted. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_msg_chat",
+      "description": "Get message chat: The chat a message belongs to. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_msg_contact",
+      "description": "Get message sender: The contact who sent the message. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_msg_group_mentions",
+      "description": "Get group mentions: Groups mentioned inside a message (distinct from contact mentions). [Read-only.]"
+    },
+    {
+      "name": "whatsapp_msg_react",
+      "description": "React via message object: Message.react, the structure-level counterpart to client.sendReaction."
+    },
+    {
+      "name": "whatsapp_accept_v4_invite",
+      "description": "Accept group v4 invite: Accepts an invite delivered as a groups_v4_invite message."
+    },
+    {
+      "name": "whatsapp_edit_scheduled_event",
+      "description": "Edit a scheduled event: Edits an event message. Provide only the fields you want changed."
+    },
+    {
+      "name": "whatsapp_chat_archive_obj",
+      "description": "Archive via chat object: Chat.archive, the structure-level counterpart to client.archiveChat."
+    },
+    {
+      "name": "whatsapp_chat_unarchive_obj",
+      "description": "Unarchive via chat object: Chat.unarchive."
+    },
+    {
+      "name": "whatsapp_chat_mute_obj",
+      "description": "Mute via chat object: Chat.mute. Blank date mutes indefinitely."
+    },
+    {
+      "name": "whatsapp_chat_unmute_obj",
+      "description": "Unmute via chat object: Chat.unmute."
+    },
+    {
+      "name": "whatsapp_chat_mark_unread_obj",
+      "description": "Mark unread via chat object: Chat.markUnread."
+    },
+    {
+      "name": "whatsapp_chat_contact",
+      "description": "Get chat contact: The contact behind a private chat. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_chat_change_labels",
+      "description": "Change labels via chat object: Chat.changeLabels. Business accounts only."
+    },
+    {
+      "name": "whatsapp_contact_chat",
+      "description": "Get chat from contact: Opens (or creates) the chat for a contact. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_contact_broadcast",
+      "description": "Get contact status feed: The contact’s broadcast/status entry. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_channel_mute",
+      "description": "Mute channel: Channel.mute."
+    },
+    {
+      "name": "whatsapp_channel_unmute",
+      "description": "Unmute channel: Channel.unmute."
+    },
+    {
+      "name": "whatsapp_media_probe",
+      "description": "Probe media loading: Loads a file or URL through MessageMedia without sending it, to check size and mimetype detection. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_modules",
+      "description": "Check WhatsApp internal modules: Resolves each internal module the library needs. Anything \"missing\" is a candidate cause when features break after a WhatsApp update. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_collections",
+      "description": "Inspect WAWebCollections: Lists what WAWebCollections actually exposes, and whether Chat/Msg/Contact are present with usable counts. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_chat_model",
+      "description": "Step through getChatModel: Reproduces the library’s getChatModel one step at a time so the exact failing line is visible instead of a minified error. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_raw_chat_count",
+      "description": "Count raw chats (bypasses getChatModel): Reads the chat collection directly. If this works while chats_all fails, the breakage is in the library’s model mapping, not in WhatsApp itself. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_versions",
+      "description": "Version drift check: Compares the WhatsApp Web build actually loaded against the version whatsapp-web.js pins. A mismatch is the usual cause of sudden breakage. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_chat_sweep",
+      "description": "Sweep getChatModel over every chat: Calls getChatModel on each chat separately and buckets the errors. Shows whether the breakage is universal or shape-specific (group vs private, @lid vs @c.us). [Read-only.]"
+    },
+    {
+      "name": "whatsapp_chats_safe",
+      "description": "List chats (resilient): Reads the chat collection directly and maps fields by hand, skipping the library’s getChatModel. Works even while chats_all is broken. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_profile_pic",
+      "description": "Trace profile picture failure: Calls the profile-picture path directly to surface the real error behind the minified one. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_patch_apply",
+      "description": "Apply compatibility patch: Guards Msg.get / Msg.getMessagesById against undefined ids, fixing getChatModel on WhatsApp Web 2.3000.1046+. Idempotent."
+    },
+    {
+      "name": "whatsapp_patch_verify",
+      "description": "Verify compatibility patch: Runs the library getChatModel over a sample of chats and reports how many now succeed. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_msg_key",
+      "description": "Dump raw message key shape: Reads recent messages straight from the Msg collection and reports the exact structure of their id, so the correct serialization is visible rather than inferred. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_diag_msg_lookup",
+      "description": "Find a working message id: Takes the newest message and tries each candidate id string against the store, reporting which form actually resolves. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_session_status",
+      "description": "Check WhatsApp sign-in status: whether the account is linked and usable, or waiting for a QR scan, connecting, or disconnected. Works even when nothing is linked, so call this FIRST whenever a WhatsApp tool fails — it tells you whether the problem is sign-in or something else. If it reports \"awaiting_scan\", call whatsapp_link_start. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_link_start",
+      "description": "Sign in to WhatsApp: opens a page in the browser showing a QR code for the user to scan with their phone, and also returns the same code as ASCII art for headless use. THIS DOES NOT WAIT. Show the user the link, tell them to scan, and then ASK THEM TO REPLY WHEN THEY ARE DONE. When they say so, call whatsapp_session_status to confirm. Never poll or loop waiting for the scan. Returns immediately if the account is already linked."
+    },
+    {
+      "name": "whatsapp_link_reset",
+      "description": "Forget the stored sign-in: deletes this machine's saved WhatsApp session so the next whatsapp_link_start produces a fresh QR. Use it when the stored session is broken or expired, or to link a different phone number. The device may stay listed under Linked Devices on the phone until WhatsApp expires it — remove it there too for a clean break. Ask the user before calling this. [DESTRUCTIVE — cannot be undone]"
+    },
+    {
+      "name": "whatsapp_pacing_status",
+      "description": "Check send pacing budget: reports how many messages have been sent recently and how much of the hourly, daily and new-chat ceilings remains. Call this before sending in bulk. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_license_status",
+      "description": "Check the OtterBridge licence: which tools this build is entitled to run, and until when. Call this FIRST whenever WhatsApp tools are missing or refuse to run — it distinguishes an expired or unlicensed build from a sign-in problem. Report its `message` to the user verbatim; it is written for them, not for you. [Read-only.]"
+    }
+  ],
+  "tools_generated": false
+}

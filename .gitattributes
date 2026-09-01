@@ -1,0 +1,5 @@
+# Shipped artifacts are byte-for-byte copies of a build. Keep them LF so a
+# clone on any platform matches what was built and packed.
+* text=auto eol=lf
+*.png binary
+*.mcpb binary

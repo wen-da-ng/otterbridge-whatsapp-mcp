@@ -1,0 +1,24 @@
+{
+  "name": "otterbridge",
+  "owner": {
+    "name": "wen-da-ng",
+    "email": "lenus.ng.wen.da@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "otterbridge-whatsapp-mcp",
+      "displayName": "WhatsApp - OtterBridge",
+      "source": "./",
+      "description": "OtterBridge WhatsApp MCP: 171 tools for the WhatsApp account you already use.",
+      "keywords": [
+        "whatsapp",
+        "messaging",
+        "chat",
+        "groups",
+        "contacts",
+        "otterbridge"
+      ]
+    }
+  ],
+  "description": "The OtterBridge family of MCP plugins by wen-da-ng — bridges from Claude to the tools you already live in (WhatsApp; sibling projects: SolidWorks, Chrome)."
+}
