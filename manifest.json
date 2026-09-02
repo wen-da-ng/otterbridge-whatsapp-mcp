@@ -2,7 +2,7 @@
   "manifest_version": "0.2",
   "name": "otterbridge-whatsapp-mcp",
   "display_name": "WhatsApp - OtterBridge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Read and act on your WhatsApp from your AI assistant — 171 tools for chats, contacts, groups, channels and media, with human-like send pacing.",
   "long_description": "Connects the WhatsApp account you already use (via WhatsApp Web) and exposes 171 tools: read chats, contacts, groups and channels; send text, media, polls, locations and stickers; react, reply, edit, forward and manage groups.\n\nOutbound messages are paced to resemble human sending — a typing indicator sized to the message, randomised delays, per-chat cooldowns, and ceilings of 40/hour, 200/day and 5 new chats per hour.\n\nEvery tool carries MCP ToolAnnotations: 69 read-only tools your assistant can call freely, and 14 irreversible ones it is told to confirm with you first.\n\nUNOFFICIAL CLIENT. This drives WhatsApp Web in a headless browser. It is not affiliated with WhatsApp or Meta, using it may violate WhatsApp's terms, and accounts can be banned. Requires Chrome (or Chromium/Edge) installed, and linking a device by QR once.",
   "author": {
@@ -38,7 +38,8 @@
       ],
       "env": {
         "WA_CLIENT_ID": "${user_config.session_name}",
-        "CHROME_PATH": "${user_config.chrome_path}"
+        "CHROME_PATH": "${user_config.chrome_path}",
+        "WA_DATA_PATH": "${user_config.data_path}"
       }
     }
   },
@@ -54,6 +55,13 @@
       "type": "string",
       "title": "Chrome path (optional)",
       "description": "Leave blank to auto-detect Chrome, Chromium or Edge. Set only if detection fails.",
+      "default": "",
+      "required": false
+    },
+    "data_path": {
+      "type": "string",
+      "title": "Session folder (optional)",
+      "description": "Where the linked WhatsApp session is stored. Leave blank for the standard per-user location (%LOCALAPPDATA%\\OtterBridge\\whatsapp-mcp on Windows, ~/Library/Application Support/OtterBridge/whatsapp-mcp on macOS). Set an absolute path to keep it elsewhere. This folder is a credential — do not put it on a shared drive.",
       "default": "",
       "required": false
     }

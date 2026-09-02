@@ -66,9 +66,23 @@ To adjust them you must rebuild from the source project (`src/whatsapp/humanize.
 
 ## Protecting the session
 
-Linking creates `.wwebjs_auth/` beside the server. **This folder is a credential.** It
-holds a Chrome profile containing WhatsApp's Signal keys, and anyone who copies it can
-read and send as you until the device is unlinked. No password is involved.
+Linking creates a `.wwebjs_auth/` folder in your per-user application data:
+
+| | |
+|---|---|
+| Windows | `%LOCALAPPDATA%\OtterBridge\whatsapp-mcp\.wwebjs_auth` |
+| macOS | `~/Library/Application Support/OtterBridge/whatsapp-mcp/.wwebjs_auth` |
+| Linux | `$XDG_DATA_HOME/otterbridge/whatsapp-mcp/.wwebjs_auth`, else `~/.local/share/…` |
+
+Set **Session folder** in the extension's settings (or `WA_DATA_PATH`) to keep it
+somewhere else. The server prints the folder it chose on every start, so the log always
+says where your session actually is. If you linked with an earlier version, which stored
+it next to the server, it is moved here automatically the first time you run this one —
+you do not have to scan again.
+
+**This folder is a credential.** It holds a Chrome profile containing WhatsApp's Signal
+keys, and anyone who copies it can read and send as you until the device is unlinked. No
+password is involved.
 
 - Keep it out of OneDrive, Dropbox, and any backup that leaves the machine
 - Never commit it

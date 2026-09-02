@@ -211,9 +211,11 @@ Read [`docs/SAFE_USE_GUIDE.md`](docs/SAFE_USE_GUIDE.md) before pointing this at 
 that matters. The short version:
 
 - **Your account can be banned.** This is an unofficial client. Prefer a spare number.
-- **The session folder is a credential.** Linking creates `.wwebjs_auth/` next to the
-  server. Anyone who copies it controls your WhatsApp until you unlink the device. Keep it
-  off shared drives and out of backups. To revoke: **WhatsApp → Linked Devices → log out**.
+- **The session folder is a credential.** Linking creates `.wwebjs_auth/` in your per-user
+  application data — `%LOCALAPPDATA%\OtterBridge\whatsapp-mcp` on Windows,
+  `~/Library/Application Support/OtterBridge/whatsapp-mcp` on macOS. Anyone who copies it
+  controls your WhatsApp until you unlink the device. Keep it off shared drives and out of
+  backups. To revoke: **WhatsApp → Linked Devices → log out**.
 - **17 destructive tools are exposed** — delete for everyone, block, leave group, delete
   channel, clear chat. Each declares `destructiveHint` and 14 also carry a `[DESTRUCTIVE]`
   marker in the description, but a misread instruction can still fire one. Start with
@@ -228,7 +230,8 @@ that matters. The short version:
 | Flag / env | Effect |
 |---|---|
 | `--link` | Print a QR and link the account, then exit |
-| `WA_DATA_PATH=…` | Where the linked session is stored. Defaults to `.wwebjs_auth` next to the server |
+| `WA_DATA_PATH=…` | Where the linked session is stored. Defaults to `.wwebjs_auth` under your per-user application data (`%LOCALAPPDATA%\OtterBridge\whatsapp-mcp`, `~/Library/Application Support/OtterBridge/whatsapp-mcp`, `$XDG_DATA_HOME/otterbridge/whatsapp-mcp`). In Claude Desktop this is the **Session folder** setting |
+| `WA_PROTOCOL_TIMEOUT_MS=…` | How long a single browser command may take before it errors (default 120000) |
 | `--read-only` | Disable every write — read and search only |
 | `--no-humanize` | Disable send pacing (not recommended) |
 | `--allow-logout` | Expose `logout` |
