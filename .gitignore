@@ -6,14 +6,12 @@ server/.wwebjs_cache/
 .wwebjs_auth/
 .wwebjs_cache/
 .env
-node_modules/
 
-# NOTE: `node_modules/` above has no leading slash, so it matches at every depth
-# and server/node_modules/ is ignored with it. That is deliberate now, but it was
-# not always: puppeteer cannot be bundled, so an earlier layout force-added those
-# ~4,200 files to keep a clone runnable for Claude Code install-by-URL.
-#
-# This repo is distribution-by-download: the deliverable is the .mcpb, which packs
-# puppeteer itself, and nobody installs by cloning. So the repo holds the shipped
-# artifacts and their history, not a runnable tree. If install-by-URL is wanted
-# again, `git add -f server/node_modules` is what brings it back.
+# The leading slash is load-bearing: it ignores ONLY a root-level node_modules,
+# never server/node_modules/. puppeteer cannot be bundled and whatsapp-web.js
+# requires it eagerly at load, so a clone WITHOUT server/node_modules crashes on
+# startup with "Cannot find module 'puppeteer'". The Claude Code plugin route
+# (/plugin install) installs by CLONING this repo, so server/node_modules/ MUST
+# be committed and runnable — a bare `node_modules/` here silently breaks that
+# entire install path while the .mcpb download keeps working.
+/node_modules/
