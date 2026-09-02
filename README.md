@@ -69,6 +69,20 @@ Then just say **"done"** and Claude carries on. Nothing polls or blocks in the b
 Running headless? The same code comes back as scannable ASCII art in the tool output, and
 `node server/index.js --link` from the extension folder still works.
 
+**4 — Unlock sending — just ask Claude.** Out of the box every *reading* tool works for free:
+chats, search, contacts, groups, media downloads. Tools that send or change anything need an
+OtterBridge licence. Say *"sign in to OtterBridge"*: a page opens in your browser, you enter
+your email and the 6-digit code it sends you, and approve this computer. **New accounts get a
+14-day free trial of everything.** Say **"done"** and the sending tools appear without a
+restart.
+
+Have a licence key instead (`OB-WA-XXXX-XXXX-XXXX-XXXX`)? Paste it into the extension's
+**Licence key** setting, or tell Claude *"activate licence key OB-WA-…"*. Keys are for
+headless machines and for licences bought without an account.
+
+Ask Claude to run `whatsapp_license_status` at any time; it says what this computer is
+entitled to and until when. `whatsapp_license_sign_out` frees the seat for another machine.
+
 **4 — Try it:** ask Claude *"How many unread WhatsApp chats do I have?"*
 
 <details>
@@ -84,6 +98,9 @@ usually 5–20 seconds, longer on a large account. Later calls are fast.
 **Ask Claude to run `whatsapp_session_status` first.** It works even when nothing is
 linked, and names the problem and the next step.
 
+- **Sending tools are missing, or say "not available on the current OtterBridge licence"** —
+  ask Claude to run `whatsapp_license_status`; its message says whether you need to sign in,
+  the trial ended, or the machine is offline too long. Reading tools always stay available.
 - **"Not signed in"** — WhatsApp sessions expire. Ask Claude to sign you in again; it will
   show a QR code. Nothing is lost.
 - **"session is already in use"** — only one process can use a session at a time; Chrome
@@ -151,7 +168,7 @@ Add `"--read-only"` to `args` to expose only the reading tools; see [Options](#o
 
 ## What your AI can do
 
-**171 tools.** Everything returns JSON.
+**174 tools.** Everything returns JSON.
 
 | Area | What it covers |
 |---|---|
@@ -269,6 +286,14 @@ changes something.
 ## Licence
 
 Proprietary — see [LICENSE](LICENSE). Third-party attribution in [NOTICE](NOTICE).
+
+The free tier (every read-only tool) needs no account. Sending and every other write needs
+an OtterBridge account or licence key; new accounts get a 14-day trial. Licensing talks to
+`dmmrxqqeslmqcldqijcl.supabase.co` in the background and sends only: your sign-in
+credential or licence key, a non-reversible device id, this computer's name as a label,
+the product name, channel and version. Never your WhatsApp messages, contacts or session.
+Tokens are verified offline and cached, so a dropped connection does not interrupt you;
+after two weeks without any contact the write tools pause until it reconnects.
 
 Not affiliated with, endorsed by, or sponsored by WhatsApp or Meta Platforms, Inc.
 WhatsApp is a trademark of Meta Platforms, Inc.

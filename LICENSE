@@ -47,9 +47,11 @@ You acknowledge that the Software contacts a licensing service operated by
 Licensor to validate your entitlement, and that it will cease to function if
 validation fails, if your subscription lapses or is cancelled, if your licence
 key is revoked, or if a time-limited or pre-release build reaches its expiry
-date. The Software transmits only your licence key, a non-reversible device
-identifier and the build version for this purpose. It does not transmit your
-WhatsApp messages, contacts, credentials or session data.
+date. The Software transmits only your licence key or account sign-in
+credential, a non-reversible device identifier, the device's host name as a
+label you can recognise, the product name, the build channel and the build
+version for this purpose. It does not transmit your WhatsApp messages,
+contacts, credentials or session data.
 
 6. PRE-RELEASE AND BETA BUILDS
 

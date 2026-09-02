@@ -135,3 +135,13 @@ issue tracker — it is far more useful than "it stopped working".
 - **Six library functions are broken upstream** and cannot be patched from outside:
   `pinned_messages`, `edit`, `group_description`, `group_revoke_invite`,
   `channel_subscribers`, and `block`/`unblock`.
+
+## Licensing and what it sends
+
+Reading tools work without an account. Sending and other writes need an OtterBridge sign-in
+or licence key (14-day trial for new accounts). The licence check runs in the background,
+never blocks a tool call, and transmits only a sign-in credential or key, a non-reversible
+device id, the computer's name, the product name, channel and version. Your WhatsApp
+session and messages never leave this machine. If write tools disappear, ask Claude to run
+`whatsapp_license_status`; it explains why and what to do. `whatsapp_license_sign_out`
+frees this machine's seat so another one can use the account.

@@ -2,9 +2,9 @@
   "manifest_version": "0.2",
   "name": "otterbridge-whatsapp-mcp",
   "display_name": "WhatsApp - OtterBridge",
-  "version": "1.0.2",
-  "description": "Read and act on your WhatsApp from your AI assistant — 171 tools for chats, contacts, groups, channels and media, with human-like send pacing.",
-  "long_description": "Connects the WhatsApp account you already use (via WhatsApp Web) and exposes 171 tools: read chats, contacts, groups and channels; send text, media, polls, locations and stickers; react, reply, edit, forward and manage groups.\n\nOutbound messages are paced to resemble human sending — a typing indicator sized to the message, randomised delays, per-chat cooldowns, and ceilings of 40/hour, 200/day and 5 new chats per hour.\n\nEvery tool carries MCP ToolAnnotations: 69 read-only tools your assistant can call freely, and 14 irreversible ones it is told to confirm with you first.\n\nUNOFFICIAL CLIENT. This drives WhatsApp Web in a headless browser. It is not affiliated with WhatsApp or Meta, using it may violate WhatsApp's terms, and accounts can be banned. Requires Chrome (or Chromium/Edge) installed, and linking a device by QR once.",
+  "version": "1.1.0",
+  "description": "Read and act on your WhatsApp from your AI assistant — 174 tools for chats, contacts, groups, channels and media, with human-like send pacing.",
+  "long_description": "Connects the WhatsApp account you already use (via WhatsApp Web) and exposes 174 tools: read chats, contacts, groups and channels; send text, media, polls, locations and stickers; react, reply, edit, forward and manage groups.\n\nOutbound messages are paced to resemble human sending — a typing indicator sized to the message, randomised delays, per-chat cooldowns, and ceilings of 40/hour, 200/day and 5 new chats per hour.\n\nEvery tool carries MCP ToolAnnotations: 69 read-only tools your assistant can call freely, and 14 irreversible ones it is told to confirm with you first.\n\nUNOFFICIAL CLIENT. This drives WhatsApp Web in a headless browser. It is not affiliated with WhatsApp or Meta, using it may violate WhatsApp's terms, and accounts can be banned. Requires Chrome (or Chromium/Edge) installed, and linking a device by QR once.",
   "author": {
     "name": "wen-da-ng",
     "email": "lenus.ng.wen.da@gmail.com"
@@ -39,7 +39,8 @@
       "env": {
         "WA_CLIENT_ID": "${user_config.session_name}",
         "CHROME_PATH": "${user_config.chrome_path}",
-        "WA_DATA_PATH": "${user_config.data_path}"
+        "WA_DATA_PATH": "${user_config.data_path}",
+        "OTTERBRIDGE_LICENSE_KEY": "${user_config.license_key}"
       }
     }
   },
@@ -57,6 +58,14 @@
       "description": "Leave blank to auto-detect Chrome, Chromium or Edge. Set only if detection fails.",
       "default": "",
       "required": false
+    },
+    "license_key": {
+      "type": "string",
+      "title": "Licence key (optional)",
+      "description": "Only for a machine nobody can open a browser on, or a key issued for CI. Most people should leave this blank and ask their assistant to \"sign in to OtterBridge\" instead — new accounts get a free trial.",
+      "default": "",
+      "required": false,
+      "sensitive": true
     },
     "data_path": {
       "type": "string",
@@ -760,7 +769,19 @@
     },
     {
       "name": "whatsapp_license_status",
-      "description": "Check the OtterBridge licence: which tools this build is entitled to run, and until when. Call this FIRST whenever WhatsApp tools are missing or refuse to run — it distinguishes an expired or unlicensed build from a sign-in problem. Report its `message` to the user verbatim; it is written for them, not for you. [Read-only.]"
+      "description": "Check the OtterBridge licence: which tools this build is entitled to run, and until when. Call this FIRST whenever WhatsApp tools are missing or refuse to run — it distinguishes an expired or unlicensed build from a sign-in problem. Also call it after the user says they have approved a sign-in in the browser. Report its `message` to the user verbatim; it is written for them, not for you. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_license_sign_in",
+      "description": "Sign in to an OtterBridge account to license this machine: opens a page in the browser where the user approves the sign-in, and returns the same link and a short code in case it did not open. THIS DOES NOT WAIT. Show the user the link and the code, tell them to approve, and then ASK THEM TO REPLY WHEN THEY ARE DONE. When they say so, call whatsapp_license_status to confirm. Never poll or loop. New accounts get a free trial automatically. For a headless machine with a licence key, use whatsapp_license_activate instead."
+    },
+    {
+      "name": "whatsapp_license_activate",
+      "description": "Activate an OtterBridge licence key on this machine (keys look like OB-WA-XXXX-XXXX-XXXX-XXXX). For headless machines and CI, or when the user has been issued a key; most users should sign in with whatsapp_license_sign_in instead. Ask the user for the key — never guess one. The key can also be set once in the extension settings (\"Licence key\") or as the OTTERBRIDGE_LICENSE_KEY environment variable."
+    },
+    {
+      "name": "whatsapp_license_sign_out",
+      "description": "Sign this machine out of its OtterBridge licence and free its seat, so another machine can use the account or key. WhatsApp itself stays linked. After this, only the read-only tools remain until someone signs in again. Ask the user before calling this."
     }
   ],
   "tools_generated": false
