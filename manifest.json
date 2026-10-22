@@ -3,8 +3,8 @@
   "name": "otterbridge-whatsapp-mcp",
   "display_name": "WhatsApp - OtterBridge",
   "version": "1.2.0",
-  "description": "Read and act on your WhatsApp from your AI assistant — 175 tools for chats, contacts, groups, channels and media, with human-like send pacing.",
-  "long_description": "Connects the WhatsApp account you already use (via WhatsApp Web) and exposes 175 tools: read chats, contacts, groups and channels; send text, media, polls, locations and stickers; react, reply, edit, forward and manage groups.\n\nOutbound messages are paced to resemble human sending — a typing indicator sized to the message, randomised delays, per-chat cooldowns, and ceilings of 40/hour, 200/day and 5 new chats per hour.\n\nEvery tool carries MCP ToolAnnotations: 70 read-only tools your assistant can call freely, and 14 irreversible ones it is told to confirm with you first.\n\nUNOFFICIAL CLIENT. This drives WhatsApp Web in a headless browser. It is not affiliated with WhatsApp or Meta, using it may violate WhatsApp's terms, and accounts can be banned. Requires Chrome (or Chromium/Edge) installed, and linking a device by QR once.",
+  "description": "Read and act on your WhatsApp from your AI assistant — 176 tools for chats, contacts, groups, channels and media, with human-like send pacing.",
+  "long_description": "Connects the WhatsApp account you already use (via WhatsApp Web) and exposes 176 tools: read chats, contacts, groups and channels; send text, media, polls, locations and stickers; react, reply, edit, forward and manage groups.\n\nOutbound messages are paced to resemble human sending — a typing indicator sized to the message, randomised delays, per-chat cooldowns, and ceilings of 40/hour, 200/day and 5 new chats per hour.\n\nEvery tool carries MCP ToolAnnotations: 70 read-only tools your assistant can call freely, and 14 irreversible ones it is told to confirm with you first.\n\nUNOFFICIAL CLIENT. This drives WhatsApp Web in a headless browser. It is not affiliated with WhatsApp or Meta, using it may violate WhatsApp's terms, and accounts can be banned. Requires Chrome (or Chromium/Edge) installed, and linking a device by QR once.",
   "author": {
     "name": "wen-da-ng",
     "email": "lenus.ng.wen.da@gmail.com"
@@ -40,6 +40,7 @@
         "WA_CLIENT_ID": "${user_config.session_name}",
         "CHROME_PATH": "${user_config.chrome_path}",
         "WA_DATA_PATH": "${user_config.data_path}",
+        "WA_ALLOW_BULK_SENDING": "${user_config.allow_bulk_sending}",
         "OTTERBRIDGE_LICENSE_KEY": "${user_config.license_key}"
       }
     }
@@ -72,6 +73,13 @@
       "title": "Session folder (optional)",
       "description": "Where the linked WhatsApp session is stored. Leave blank for the standard per-user location (%LOCALAPPDATA%\\OtterBridge\\whatsapp-mcp on Windows, ~/Library/Application Support/OtterBridge/whatsapp-mcp on macOS). Set an absolute path to keep it elsewhere. This folder is a credential — do not put it on a shared drive.",
       "default": "",
+      "required": false
+    },
+    "allow_bulk_sending": {
+      "type": "boolean",
+      "title": "Allow automated & bulk sending",
+      "description": "Turn on only to run an automated service, such as a customer-service bot, or to message many people. Bulk-looking sends are then never held for confirmation and the hourly and daily limits are lifted; messages are still paced. Sending the same or similar messages to many people is the pattern WhatsApp bans accounts for, sometimes permanently. By turning this on you accept that risk and are responsible for following WhatsApp's terms and anti-spam rules.",
+      "default": false,
       "required": false
     }
   },
@@ -770,6 +778,10 @@
     {
       "name": "whatsapp_pacing_status",
       "description": "Check send pacing budget: reports how many messages have been sent recently and how much of the hourly, daily and new-chat ceilings remains. Call this before sending in bulk. [Read-only.]"
+    },
+    {
+      "name": "whatsapp_confirm_bulk_send",
+      "description": "Record that the user has been warned about bulk sending, accepts the risk to their account, and wants to go ahead, allowing the same or similar message to go to many chats for the rest of this session. Call it ONLY after a send was stopped as a bulk send, you have passed that warning on to the user, and they have said yes in their own words — never on your own judgement and never just to get past the stop. Their client may ask them to approve this call; that approval is their consent. For an automated service, point them to the \"Allow automated & bulk sending\" setting instead."
     },
     {
       "name": "whatsapp_license_status",
