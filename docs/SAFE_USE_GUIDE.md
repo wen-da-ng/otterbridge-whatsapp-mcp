@@ -61,6 +61,19 @@ because a fixed delay is itself a machine signature.
 Ceilings: **40/hour**, **200/day**, **5 new chats/hour**. Exceeding one returns an error
 the model can read and respond to, rather than silently queueing.
 
+Bulk-looking sending needs the account owner's consent. The same message to a third chat
+within an hour, or a sixth different chat within 15 minutes, waits for you to agree. Claude
+Code asks you in its own confirmation dialog; Claude Desktop stops the send, your assistant
+explains why, and if you still want it, Desktop asks you to approve the "Allow bulk sending"
+step. Either way the consent lasts for the session.
+
+To run an automated service, turn on **Allow automated & bulk sending** in the extension
+settings (or `WA_ALLOW_BULK_SENDING=true`). That is standing consent: nothing is held, and
+the hourly, daily and new-chat ceilings above are lifted, though each message is still
+paced. The risk to the account is then yours, and so is following WhatsApp's terms and
+anti-spam rules. Promotions to people who never asked for them remain the fastest way to
+lose an account.
+
 To adjust them you must rebuild from the source project (`src/whatsapp/humanize.js`).
 `--no-humanize` disables pacing entirely and is not recommended.
 

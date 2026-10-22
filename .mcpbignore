@@ -13,3 +13,7 @@
 # Claude Code plugin wiring — shipped by the repo, not by the .mcpb
 .claude-plugin/
 .mcp.json
+
+# A built bundle never goes inside the next one. The file is named per build
+# (--name), so a renamed build would otherwise pack the previous one.
+*.mcpb

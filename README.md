@@ -64,7 +64,7 @@ A sign-in page opens in your browser with a QR code that **refreshes itself**, s
 no 20-second scramble. Scan it with **WhatsApp → Settings → Linked Devices → Link a
 Device**. The page tells you the moment it works.
 
-Then just say **"done"** and Claude carries on. Nothing polls or blocks in the background.
+Claude notices the moment you are in and carries on by itself, and the tab closes on its own — there is no need to tell it you are done.
 
 Running headless? The same code comes back as scannable ASCII art in the tool output, and
 `node server/index.js --link` from the extension folder still works.
@@ -145,7 +145,7 @@ a folder or repo holding `.claude-plugin/marketplace.json` and reads the plugin 
 there. `otterbridge` is the marketplace name declared in that file.
 
 Then just ask Claude to *"sign in to WhatsApp"* — a browser page opens with a
-self-refreshing QR code. Scan it, say **"done"**, and you are in. (`node server/index.js
+self-refreshing QR code. Scan it and Claude carries on by itself. (`node server/index.js
 --link` from the plugin folder also still works.)
 
 ## Install — any other MCP client
@@ -168,7 +168,7 @@ Add `"--read-only"` to `args` to expose only the reading tools; see [Options](#o
 
 ## What your AI can do
 
-**174 tools.** Everything returns JSON.
+**176 tools.** Everything returns JSON.
 
 | Area | What it covers |
 |---|---|
@@ -220,6 +220,23 @@ reports current usage.
 The new-chat ceiling is strictest on purpose: messaging people who never messaged you is
 the strongest signal associated with enforcement.
 
+**Bulk sending needs your consent.** The same message to a third chat within an hour, or a
+sixth different chat within 15 minutes, looks like a mail-out — the pattern WhatsApp bans
+accounts for, sometimes permanently. Such a send waits for *you*, not your assistant, to agree:
+
+- **Claude Code** shows its own confirmation dialog, which only you can answer. Accept sends it;
+  tick the box to allow bulk sending for the rest of the session.
+- **Claude Desktop** has no such dialog, so the send is stopped and your assistant tells you
+  why. If you still want it, say so: Claude Desktop then asks you to approve the
+  "Allow bulk sending" step, and that approval covers the rest of the session.
+- **For an automated service** — a customer-service bot, a mailing to people who asked for
+  it — turn on **Allow automated & bulk sending** in the extension settings (or set
+  `WA_ALLOW_BULK_SENDING=true`). Nothing is held for confirmation and the hourly and daily
+  limits are lifted; messages are still paced. You accept the risk to the account and are
+  responsible for following WhatsApp's terms.
+
+A conversation with one person never counts.
+
 **This is risk reduction, not immunity.** Nobody outside Meta knows the real thresholds.
 
 ## Safety
@@ -254,6 +271,7 @@ that matters. The short version:
 | `--allow-logout` | Expose `logout` |
 | `WA_CLIENT_ID=name` | Name the session folder; use different values for multiple accounts |
 | `CHROME_PATH=…` | Point at a specific browser if auto-detection fails |
+| `WA_ALLOW_BULK_SENDING=true` | Standing consent to automated & bulk sending: nothing is held for confirmation and the volume limits are lifted. You accept the risk to the account |
 
 ## What's in this repo
 
