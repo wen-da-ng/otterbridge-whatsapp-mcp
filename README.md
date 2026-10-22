@@ -64,7 +64,7 @@ A sign-in page opens in your browser with a QR code that **refreshes itself**, s
 no 20-second scramble. Scan it with **WhatsApp → Settings → Linked Devices → Link a
 Device**. The page tells you the moment it works.
 
-Then just say **"done"** and Claude carries on. Nothing polls or blocks in the background.
+Claude notices the moment you are in and carries on by itself, and the tab closes on its own — there is no need to tell it you are done.
 
 Running headless? The same code comes back as scannable ASCII art in the tool output, and
 `node server/index.js --link` from the extension folder still works.
@@ -145,7 +145,7 @@ a folder or repo holding `.claude-plugin/marketplace.json` and reads the plugin 
 there. `otterbridge` is the marketplace name declared in that file.
 
 Then just ask Claude to *"sign in to WhatsApp"* — a browser page opens with a
-self-refreshing QR code. Scan it, say **"done"**, and you are in. (`node server/index.js
+self-refreshing QR code. Scan it and Claude carries on by itself. (`node server/index.js
 --link` from the plugin folder also still works.)
 
 ## Install — any other MCP client
@@ -168,7 +168,7 @@ Add `"--read-only"` to `args` to expose only the reading tools; see [Options](#o
 
 ## What your AI can do
 
-**174 tools.** Everything returns JSON.
+**175 tools.** Everything returns JSON.
 
 | Area | What it covers |
 |---|---|
