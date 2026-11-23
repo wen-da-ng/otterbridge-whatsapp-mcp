@@ -168,13 +168,13 @@ Add `"--read-only"` to `args` to expose only the reading tools; see [Options](#o
 
 ## What your AI can do
 
-**176 tools.** Everything returns JSON.
+**177 tools.** Everything returns JSON, except `whatsapp_view_media`, which hands your assistant the picture itself.
 
 | Area | What it covers |
 |---|---|
 | **Chats** | List, search across all history, fetch messages, archive, pin, mute, mark unread, typing indicators |
 | **Messaging** | Send text, images, video, documents, stickers, voice notes, locations, contact cards, polls |
-| **Message actions** | Reply, react, edit, forward, star, pin, delete, download media, read receipts |
+| **Message actions** | Reply, react, edit, forward, star, pin, delete, download media, view photos and video frames, read receipts |
 | **Contacts** | Look up, resolve numbers to WhatsApp ids, check registration, profile pictures, About text, shared groups, block/unblock |
 | **Groups** | Create, list, membership, promote/demote admins, rename, description, picture, invite links, join requests, admin-only settings |
 | **Channels** | Create, search the directory, subscribe, post, read, manage admins |
@@ -193,11 +193,11 @@ support per-tool approval can use it to auto-allow the harmless ones:
 
 | | Count | What it means |
 |---|---|---|
-| 🟢 **Read-only** | 68 | Looks at your account and changes nothing. Safe to call while exploring. |
+| 🟢 **Read-only** | 69 | Looks at your account and changes nothing. Safe to call while exploring. |
 | 🔵 **Writes** | 85 | Sends a message, renames a group, archives a chat. Visible to other people, but reversible. |
 | 🔴 **Destructive** | 17 | Removes or invalidates something. 14 of these also carry a `[DESTRUCTIVE — cannot be undone]` warning your assistant is told to confirm with you first. |
 
-Start with `--read-only` if you want to look before you touch — it exposes the 68 reading
+Start with `--read-only` if you want to look before you touch — it exposes the 69 reading
 tools and refuses to load the rest at all, so there is nothing to misfire.
 
 ## Pacing — why this matters
