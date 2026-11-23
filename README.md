@@ -294,10 +294,12 @@ Everything here is produced by the build in a private source repo and copied in 
 there is nothing to patch by hand: a fix goes into the source and comes back out as a new
 build.
 
-A note on the underlying library: `whatsapp-web.js` 1.34.7 is **partially broken** against
-current WhatsApp Web, which renamed an internal id field. That single change disabled chat
-listing, message ids, event payloads and send return values — surfacing as six unrelated
-errors. This server ships runtime patches for all of it, applied automatically on connect.
+A note on the underlying library: WhatsApp Web renamed an internal id field, which left
+`whatsapp-web.js` 1.34.7 **partially broken** — chat listing, message ids, event payloads
+and send return values, surfacing as six unrelated errors. This server ships on 1.34.8,
+which fixes that upstream, and keeps its own runtime patches as a fallback: they act only
+when an id is missing, and they do not depend on the field's new name, so they still
+work if WhatsApp renames it again.
 `whatsapp_diag_versions` and `whatsapp_patch_verify` are where to start when WhatsApp next
 changes something.
 
